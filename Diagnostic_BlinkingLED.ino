@@ -1,13 +1,12 @@
+//Diagnostic Code, makes the built in LED blink on the Arduino.
+//Replace LED_BUILTIN with a pin # to use another LED.
 const int LED = LED_BUILTIN;
 
 void setup() {
-  // put your setup code here, to run once:
   pinMode(LED, OUTPUT);
-
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
   blink();
 }
 
