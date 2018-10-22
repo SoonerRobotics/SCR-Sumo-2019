@@ -30,7 +30,7 @@ void setup() {
 void loop() {
   Usb.Task();
   if (Xbox.XboxReceiverConnected) {
-    for (uint8_t i = 0; i < 4; i++) {
+    for (uint8_t i = 0; i < 4; i++) { // For loop cycles through controllers 1 to 4
       if (Xbox.Xbox360Connected[i]) {
         // Turn on LED when A is clicked
         if (Xbox.getButtonClick(A, i)) {
