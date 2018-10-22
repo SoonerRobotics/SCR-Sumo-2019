@@ -1,3 +1,7 @@
+// Test for XBOX controller, which toggles a light tied to pin #4
+// A to turn on the light
+// B to turn off the light
+
 #include <XBOXRECV.h>
 
 // Satisfy the IDE, which needs to see the include statment in the ino too.
