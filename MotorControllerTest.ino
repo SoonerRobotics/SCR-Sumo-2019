@@ -26,7 +26,9 @@ void setup() {
 void loop() {
   Usb.Task();
   if (Xbox.XboxReceiverConnected) {
-      Serial.println(Xbox.getAnalogHat(LeftHatX, 0) + "\t" + Xbox.getAnalogHat(LeftHatY, 0));
+      Serial.print(Xbox.getAnalogHat(LeftHatX, 0));
+      Serial.print("\t");
+      Serial.print(Xbox.getAnalogHat(LeftHatY, 0));
     }
   }
 }
