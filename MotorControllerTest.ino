@@ -1,5 +1,5 @@
 // Test for XBOX controller, which outputs directional input
-const int MaxDir = 312768;
+const int MaxDir = 32768;
 
 #include <XBOXRECV.h>
 
