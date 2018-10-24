@@ -1,8 +1,8 @@
 // Test for XBOX controller, which outputs directional input
 const int MaxDir = 32768;
 const int hatTolerance = 7500;
-const int leftWheel;
-const int rightWheel;
+int leftWheel;
+int rightWheel;
 
 #include <XBOXRECV.h>
 
@@ -40,11 +40,11 @@ void loop() {
     
     if (Xbox.getAnalogHat(rightHatY, 0) < hatTolerance)
     {
-      leftWheel = 0;
+      rightWheel = 0;
     }
     else
     {
-      leftWheel = 1;
+      rightWheel = 1;
     }
     
     //Final Output
@@ -52,5 +52,6 @@ void loop() {
     Serial.print(leftWheel);
     Serial.print("\tRight Wheel: ");
     Serial.print(rightWheel);
+    Serial.print("\n");
   }
 }
