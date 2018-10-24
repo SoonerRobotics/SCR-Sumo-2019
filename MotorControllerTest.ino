@@ -1,4 +1,5 @@
 // Test for XBOX controller, which outputs directional input
+const int MaxDir = 312768;
 
 #include <XBOXRECV.h>
 
@@ -24,20 +25,8 @@ void setup() {
 }
 void loop() {
   Usb.Task();
-  Serial.println(F(Xbox.getAnalogHat(0, 0)));
   if (Xbox.XboxReceiverConnected) {
-    for (uint8_t i = 0; i < 4; i++) { // For loop cycles through controllers 1 to 4
-        // Turn on LED when A is clicked
-        if (Xbox.getButtonClick(A, i)) {
-          digitalWrite(led, HIGH);
-          Serial.println(F("LED on")); 
-        }
-        // Turn off LED when B is clicked
-        if (Xbox.getButtonClick(B, i)) {
-          digitalWrite(led, LOW);
-          Serial.println(F("LED off"));
-        }
-      }
+      Serial.println(Xbox.getAnalogHat(LeftHatX, 0) + "\t" + Xbox.getAnalogHat(LeftHatY, 0));
     }
   }
 }
