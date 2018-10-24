@@ -1,6 +1,7 @@
 // Test for XBOX controller, which outputs directional input
 const int MaxDir = 32768;
 const int hatTolerance = 7500;
+const int minSpeed = 100;
 int leftWheel;
 int rightWheel;
 
@@ -35,7 +36,10 @@ void loop() {
     }
     else
     {
-      leftWheel = 1;
+      if (Xbox.getButtonPressed(L2, 0) < minSpeed)
+        leftWheel = minSpeed;
+      else
+        leftWheel = Xbox.getButtonPressed(L2, 0);
     }
     
     if (Xbox.getAnalogHat(rightHatY, 0) < hatTolerance)
@@ -44,7 +48,10 @@ void loop() {
     }
     else
     {
-      rightWheel = 1;
+      if (Xbox.getButtonPressed(R2, 0) < minSpeed)
+        rightWheel = minSpeed;
+      else
+        rightWheel = Xbox.getButtonPressed(R2, 0);
     }
     
     //Final Output
