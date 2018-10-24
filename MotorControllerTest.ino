@@ -1,5 +1,8 @@
 // Test for XBOX controller, which outputs directional input
 const int MaxDir = 32768;
+const int hatTolerance = 7500;
+const int leftWheel;
+const int rightWheel;
 
 #include <XBOXRECV.h>
 
@@ -26,9 +29,28 @@ void setup() {
 void loop() {
   Usb.Task();
   if (Xbox.XboxReceiverConnected) {
-      Serial.print(Xbox.getAnalogHat(LeftHatX, 0));
-      Serial.print("\t");
-      Serial.println(Xbox.getAnalogHat(LeftHatY, 0));
+    if (Xbox.getAnalogHat(LeftHatY, 0) < hatTolerance)
+    {
+      leftWheel = 0;
     }
+    else
+    {
+      leftWheel = 1;
+    }
+    
+    if (Xbox.getAnalogHat(rightHatY, 0) < hatTolerance)
+    {
+      leftWheel = 0;
+    }
+    else
+    {
+      leftWheel = 1;
+    }
+    
+    //Final Output
+    Serial.print("Left Wheel: ");
+    Serial.print(leftWheel);
+    Serial.print("\tRight Wheel: ");
+    Serial.print(rightWheel);
   }
 }
