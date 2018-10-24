@@ -28,7 +28,7 @@ void loop() {
   if (Xbox.XboxReceiverConnected) {
       Serial.print(Xbox.getAnalogHat(LeftHatX, 0));
       Serial.print("\t");
-      Serial.print(Xbox.getAnalogHat(LeftHatY, 0));
+      Serial.println(Xbox.getAnalogHat(LeftHatY, 0));
     }
   }
 }
