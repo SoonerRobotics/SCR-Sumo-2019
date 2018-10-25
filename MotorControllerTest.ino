@@ -32,11 +32,11 @@ void loop() {
   
   if (Xbox.XboxReceiverConnected) {
     //Set Speed by L2 and R2
-    if (Xbox.getButtonPressed(L2, 0) < minSpeed)
+    if (Xbox.getButtonPress(L2, 0) < minSpeed)
       leftWheel = minSpeed;
     else
       leftWheel = Xbox.getButtonPress(L2, 0);
-    if (Xbox.getButtonPressed(R2, 0) < minSpeed)
+    if (Xbox.getButtonPress(R2, 0) < minSpeed)
       rightWheel = minSpeed;
     else
       rightWheel = Xbox.getButtonPress(R2, 0);
