@@ -29,29 +29,45 @@ void setup() {
 }
 void loop() {
   Usb.Task();
+  
   if (Xbox.XboxReceiverConnected) {
-    if (Xbox.getAnalogHat(LeftHatY, 0) < hatTolerance)
-    {
-      leftWheel = 0;
-    }
+    //Set Speed by L2 and R2
+    if (Xbox.getButtonPressed(L2, 0) < minSpeed)
+      leftWheel = minSpeed;
     else
+      leftWheel = Xbox.getButtonPress(L2, 0);
+    if (Xbox.getButtonPressed(R2, 0) < minSpeed)
+      rightWheel = minSpeed;
+    else
+      rightWheel = Xbox.getButtonPress(R2, 0);
+    
+    //Multiply based on Directions of sticks
+    //Left side first
+    if (Xbox.getAnalogHat(LeftHatY, 0) < hatTolerance && Xbox.getAnalogHat(LeftHatY, 0) > -hatTolerance)
     {
-      if (Xbox.getButtonPressed(L2, 0) < minSpeed)
-        leftWheel = minSpeed;
-      else
-        leftWheel = Xbox.getButtonPress(L2, 0);
+      leftWheel = leftWheel * 0;
+    }
+    else if (Xbox.getAnalogHat(LeftHatY, 0) > hatTolerance )
+    {
+      leftWheel = leftWheel * 1;
+    }
+    else if (Xbox.getAnalogHat(LeftHatY, 0) < -hatTolerance)
+    {
+      leftWheel = leftWheel * -1;
     }
     
-    if (Xbox.getAnalogHat(RightHatY, 0) < hatTolerance)
+      //Right side second
+    if (Xbox.getAnalogHat(RightHatY, 0) < hatTolerance && Xbox.getAnalogHat(RightHatY, 0) > -hatTolerance)
     {
-      rightWheel = 0;
+      rightWheel = rightWheel * 0;
     }
-    else
+    else if (Xbox.getAnalogHat(RightHatY, 0) > hatTolerance )
     {
-      if (Xbox.getButtonPressed(R2, 0) < minSpeed)
-        rightWheel = minSpeed;
-      else
-        rightWheel = Xbox.getButtonPress(R2, 0);
+      rightWheel = rightWheel * 1;
+    }
+    else if (Xbox.getAnalogHat(RightHatY, 0) < -hatTolerance)
+    {
+      rightWheel = rightWheel * -1;
     }
     
     //Final Output
