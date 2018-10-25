@@ -39,10 +39,10 @@ void loop() {
       if (Xbox.getButtonPressed(L2, 0) < minSpeed)
         leftWheel = minSpeed;
       else
-        leftWheel = Xbox.getButtonPressed(L2, 0);
+        leftWheel = Xbox.getButtonPress(L2, 0);
     }
     
-    if (Xbox.getAnalogHat(rightHatY, 0) < hatTolerance)
+    if (Xbox.getAnalogHat(RightHatY, 0) < hatTolerance)
     {
       rightWheel = 0;
     }
@@ -51,7 +51,7 @@ void loop() {
       if (Xbox.getButtonPressed(R2, 0) < minSpeed)
         rightWheel = minSpeed;
       else
-        rightWheel = Xbox.getButtonPressed(R2, 0);
+        rightWheel = Xbox.getButtonPress(R2, 0);
     }
     
     //Final Output
