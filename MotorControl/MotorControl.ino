@@ -9,6 +9,8 @@
 USB Usb;
 XBOXRECV Xbox(&Usb);
 const int CNTRL_NUM = 0; // Number of controller, 0-3 (1-4)
+const int MAX_STICK = 32767;
+const int HAT_TOLERANCE = 7500;
 
 const int LEFT_SPEED = 5; // Pin (PWM) that controls speed of left motor
 const int LEFT_FWD = 2; // When output HIGH, motor spins forward.
@@ -57,7 +59,7 @@ void loop() {
         analogWrite(LEFT_SPEED, leftPower);
       }
       else if (leftY < -1 * HAT_TOLERANCE) {
-        digitalWrite(LEFT_FWD, LOW)
+        digitalWrite(LEFT_FWD, LOW);
         digitalWrite(LEFT_REV, HIGH);
         analogWrite(LEFT_SPEED, leftPower);
       }
@@ -73,7 +75,7 @@ void loop() {
         analogWrite(RIGHT_SPEED, leftPower);
       }
       else if (rightY < -1 * HAT_TOLERANCE) {
-        digitalWrite(RIGHT_FWD, LOW)
+        digitalWrite(RIGHT_FWD, LOW);
         digitalWrite(RIGHT_REV, HIGH);
         analogWrite(RIGHT_SPEED, leftPower);
       }
