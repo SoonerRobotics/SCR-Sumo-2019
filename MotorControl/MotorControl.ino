@@ -1,3 +1,27 @@
+/* Controls two motors using left and right sticks on Wireless XBox 360 Controller
+ *  
+ *  Each motor is controlled with 3 signals:
+ *  
+ *  1 "analog" signal to set the speed of the motor: SPEED
+ *  The motor controller wants a PWM signal
+ *  On the Arduino, this means we have to use a pin that has a tilde (~) by its number
+ *  Then we can use analogWrite to send a value between 0 (coasting, motor off) 
+ *  and 255 (motor on, full speed in chosen direction or braking)
+ *  
+ *  2 digital signals to set direction: FWD,REV
+ *  These signals can be output from almost any pin using digitalWrite
+ *  Directional signals can be summarized with the following truth table:
+ *  ____________________
+ * |FWD,REV  |MOTOR DIR.|
+ * |---------|----------|
+ * |LOW,LOW  |BRAKE*    |
+ * |LOW,HIGH |REVERSE   |
+ * |HIGH,LOW |FORWARD   |
+ * |HIGH,HIGH|BRAKE*    |
+ * |_________|__________|
+ * *SPEED must be nonzero
+ */
+
 #include <XBOXRECV.h>
 
 // Satisfy the IDE, which needs to see the include statment in the ino too.
@@ -9,17 +33,17 @@
 USB Usb;
 XBOXRECV Xbox(&Usb);
 const int CNTRL_NUM = 0; // Number of controller, 0-3 (1-4)
-const int MAX_STICK = 32767;
-const int HAT_TOLERANCE = 7500;
+const int MAX_STICK = 32767; // Maximum input value received from analog sticks (should not change)
+const int STICK_TOLERANCE = 7500; // Input from the analog sticks below this value will be ignored
 
 const int LEFT_SPEED = 5; // Pin (PWM) that controls speed of left motor
-const int LEFT_FWD = 2; // When output HIGH, motor spins forward.
-const int LEFT_REV = 4; // When output HIGH, motor spins backward.
+const int LEFT_FWD = 2; // When output HIGH, left motor spins forward
+const int LEFT_REV = 4; // When output HIGH, left motor spins backward
 const int RIGHT_SPEED = 6; // Pin (PWM) that controls speed of right motor
-const int RIGHT_FWD = 7; // When output HIGH, motor spins forward.
-const int RIGHT_REV = 8; // When output HIGH, motor spins backward.
+const int RIGHT_FWD = 7; // When output HIGH, right motor spins forward
+const int RIGHT_REV = 8; // When output HIGH, right motor spins backward
 
-const double MAX_SPEED = 200.0; // Maximum speed of motor, from 0-255
+const double MAX_SPEED = 200.0; // Maximum speed of motor, from 0.0-255.0
 
 int leftY;
 int rightY;
@@ -47,42 +71,50 @@ void loop() {
   Usb.Task();
   if (Xbox.XboxReceiverConnected) {
     if (Xbox.Xbox360Connected[CNTRL_NUM]) {
+      // Get analog stick y-values
       leftY = Xbox.getAnalogHat(LeftHatY, CNTRL_NUM);
       rightY = Xbox.getAnalogHat(RightHatY, CNTRL_NUM);
 
-      leftPower = abs(leftY * MAX_SPEED / MAX_STICK); // Scale value from 0 to MAX_SPEED based on left stick y input
-      rightPower = abs(rightY * MAX_SPEED / MAX_STICK); // Scale value from 0 to MAX_SPEED based on right stick y input
+      // Linearly scale values from 0 to MAX_SPEED based on y-input from stick
+      leftPower = abs(leftY * MAX_SPEED / MAX_STICK);
+      rightPower = abs(rightY * MAX_SPEED / MAX_STICK);
 
-      if (leftY > HAT_TOLERANCE) {
+      // Left stick is pushed forward
+      if (leftY > STICK_TOLERANCE) {
         digitalWrite(LEFT_FWD, HIGH);
         digitalWrite(LEFT_REV, LOW);
         analogWrite(LEFT_SPEED, leftPower);
       }
-      else if (leftY < -1 * HAT_TOLERANCE) {
+      // Left stick is pushed backward
+      else if (leftY < -1 * STICK_TOLERANCE) {
         digitalWrite(LEFT_FWD, LOW);
         digitalWrite(LEFT_REV, HIGH);
         analogWrite(LEFT_SPEED, leftPower);
       }
+      // Left stick is not pushed or pushed less than tolerance
       else {
         digitalWrite(LEFT_FWD, LOW);
         digitalWrite(LEFT_REV, LOW);
-        analogWrite(LEFT_SPEED, 0);
+        analogWrite(LEFT_SPEED, 255);
       }
-      
-      if (rightY > HAT_TOLERANCE) {
+
+      // Right stick is pushed forward
+      if (rightY > STICK_TOLERANCE) {
         digitalWrite(RIGHT_FWD, HIGH);
         digitalWrite(RIGHT_REV, LOW);
         analogWrite(RIGHT_SPEED, leftPower);
       }
-      else if (rightY < -1 * HAT_TOLERANCE) {
+      // Right stick is pushed backward
+      else if (rightY < -1 * STICK_TOLERANCE) {
         digitalWrite(RIGHT_FWD, LOW);
         digitalWrite(RIGHT_REV, HIGH);
         analogWrite(RIGHT_SPEED, leftPower);
       }
+      // Right stick is not pushed or pushed less than tolerance
       else {
         digitalWrite(RIGHT_FWD, LOW);
         digitalWrite(RIGHT_REV, LOW);
-        analogWrite(RIGHT_SPEED, 0);
+        analogWrite(RIGHT_SPEED, 255);
       }
     }
   }
