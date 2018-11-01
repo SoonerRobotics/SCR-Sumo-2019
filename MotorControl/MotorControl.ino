@@ -102,13 +102,13 @@ void loop() {
       if (rightY > STICK_TOLERANCE) {
         digitalWrite(RIGHT_FWD, HIGH);
         digitalWrite(RIGHT_REV, LOW);
-        analogWrite(RIGHT_SPEED, leftPower);
+        analogWrite(RIGHT_SPEED, rightPower);
       }
       // Right stick is pushed backward
       else if (rightY < -1 * STICK_TOLERANCE) {
         digitalWrite(RIGHT_FWD, LOW);
         digitalWrite(RIGHT_REV, HIGH);
-        analogWrite(RIGHT_SPEED, leftPower);
+        analogWrite(RIGHT_SPEED, rightPower);
       }
       // Right stick is not pushed or pushed less than tolerance
       else {
