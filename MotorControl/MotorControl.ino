@@ -117,5 +117,15 @@ void loop() {
         analogWrite(RIGHT_SPEED, 255);
       }
     }
+    // If controller is disconnected
+    else {
+      // Cut power to motors
+      digitalWrite(LEFT_FWD, LOW);
+      digitalWrite(LEFT_REV, LOW);
+      analogWrite(LEFT_SPEED, 0);
+      digitalWrite(RIGHT_FWD, LOW);
+      digitalWrite(RIGHT_REV, LOW);
+      analogWrite(RIGHT_SPEED, 0);
+    }
   }
 }
