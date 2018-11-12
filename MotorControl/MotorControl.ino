@@ -43,7 +43,8 @@ const int RIGHT_SPEED = 6; // Pin (PWM) that controls speed of right motor
 const int RIGHT_FWD = 7; // When output HIGH, right motor spins forward
 const int RIGHT_REV = 8; // When output HIGH, right motor spins backward
 
-const double MAX_SPEED = 200.0; // Maximum speed of motor, from 0.0-255.0
+const double MAX_SPEED = 50.0; // Maximum speed of motors, from 0.0-255.0
+const double TURBO_SPEED = 200.0; // Max speed when turbo button is pressed
 
 int leftY;
 int rightY;
@@ -75,9 +76,21 @@ void loop() {
       leftY = Xbox.getAnalogHat(LeftHatY, CNTRL_NUM);
       rightY = Xbox.getAnalogHat(RightHatY, CNTRL_NUM);
 
+      if (Xbox.getButtonPress(R1, CNTRL_NUM)) {
+        Serial.print(millis());
+        Serial.print('\t');
+        Serial.println("Turbo pressed");
+        leftPower = abs(leftY * TURBO_SPEED / MAX_STICK);
+        rightPower = abs(rightY * TURBO_SPEED / MAX_STICK);
+      }
+      else {
+        Serial.print(millis());
+        Serial.print('\t');
+        Serial.println("Turbo not pressed");
+        leftPower = abs(leftY * MAX_SPEED / MAX_STICK);
+        rightPower = abs(rightY * MAX_SPEED / MAX_STICK);                
+      }
       // Linearly scale values from 0 to MAX_SPEED based on y-input from stick
-      leftPower = abs(leftY * MAX_SPEED / MAX_STICK);
-      rightPower = abs(rightY * MAX_SPEED / MAX_STICK);
 
       // Left stick is pushed forward
       if (leftY > STICK_TOLERANCE) {
@@ -128,4 +141,14 @@ void loop() {
       analogWrite(RIGHT_SPEED, 0);
     }
   }
+  // If receiver is disconnected
+  else {
+    // Cut power to motors
+    digitalWrite(LEFT_FWD, LOW);
+    digitalWrite(LEFT_REV, LOW);
+    analogWrite(LEFT_SPEED, 0);
+    digitalWrite(RIGHT_FWD, LOW);
+    digitalWrite(RIGHT_REV, LOW);
+    analogWrite(RIGHT_SPEED, 0);
+    }
 }
