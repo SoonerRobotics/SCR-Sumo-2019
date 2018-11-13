@@ -46,6 +46,8 @@ const int RIGHT_REV = 8; // When output HIGH, right motor spins backward
 const double MAX_SPEED = 50.0; // Maximum speed of motors, from 0.0-255.0
 const double TURBO_SPEED = 200.0; // Max speed when turbo button is pressed
 
+const ButtonEnum TURBO_BUTTON = R1; // Turbo button - increases max speed when pressed
+
 int leftY;
 int rightY;
 int leftPower;
@@ -76,10 +78,12 @@ void loop() {
       leftY = Xbox.getAnalogHat(LeftHatY, CNTRL_NUM);
       rightY = Xbox.getAnalogHat(RightHatY, CNTRL_NUM);
 
-      if (Xbox.getButtonPress(R1, CNTRL_NUM)) {
+      // When turbo button is held
+      if (Xbox.getButtonPress(TURBO_BUTTON, CNTRL_NUM)) {
         Serial.print(millis());
         Serial.print('\t');
         Serial.println("Turbo pressed");
+        // Linearly scale values from 0 to TURBO_SPEED based on y-input from stick
         leftPower = abs(leftY * TURBO_SPEED / MAX_STICK);
         rightPower = abs(rightY * TURBO_SPEED / MAX_STICK);
       }
@@ -87,10 +91,10 @@ void loop() {
         Serial.print(millis());
         Serial.print('\t');
         Serial.println("Turbo not pressed");
+        // Linearly scale values from 0 to MAX_SPEED based on y-input from stick
         leftPower = abs(leftY * MAX_SPEED / MAX_STICK);
         rightPower = abs(rightY * MAX_SPEED / MAX_STICK);                
       }
-      // Linearly scale values from 0 to MAX_SPEED based on y-input from stick
 
       // Left stick is pushed forward
       if (leftY > STICK_TOLERANCE) {
