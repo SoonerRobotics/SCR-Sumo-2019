@@ -1,6 +1,6 @@
 class Motor {
   private:
-    int MAX_POWER = 95;
+    int maxPower;;
     int directionPin;
     int speedPin;
     int enablePin;
@@ -13,4 +13,6 @@ class Motor {
     void setPower(double power);
     void enable(bool enable);
     void setDirection(bool forward);
+    void setMaxPower(int power);
+    void setPwmFrequency(int pin, int divisor);
 };
