@@ -1,3 +1,6 @@
+#ifndef LINESENSOR_H
+#define LINESENSOR_H
+
 class LineSensor {
   private:
     int dataPin;
@@ -10,3 +13,5 @@ class LineSensor {
     int getRawReflectance();
     bool seeWhite();
 };
+
+#endif

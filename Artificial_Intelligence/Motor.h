@@ -1,3 +1,6 @@
+#ifndef MOTOR_H
+#define MOTOR_H
+
 class Motor {
   private:
     int maxPower;;
@@ -16,3 +19,5 @@ class Motor {
     void setMaxPower(int power);
     void setPwmFrequency(int pin, int divisor);
 };
+
+#endif
