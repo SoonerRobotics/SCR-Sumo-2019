@@ -16,7 +16,7 @@ Motor::Motor(int directionPin, int speedPin, int enablePin, bool reversed) {
   pinMode(enablePin, OUTPUT);
   power = 0.0;
   maxPower = 95;
-  setPwmFrequency(speedPin, 1);
+  //setPwmFrequency(speedPin, 1);
 }
 
 /*
