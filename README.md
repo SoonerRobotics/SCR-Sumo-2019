@@ -4,6 +4,7 @@
 
 #### Current Goals:
 - [x] Create Working Code which will sense directional input and output it so that motorcontrollers may be able to use it.
+- [ ] Use [Processing](https://processing.org/) to record and/or visualize sensor data
 - [ ] Other stuff
 
 
